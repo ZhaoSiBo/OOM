@@ -9,3 +9,15 @@
 
 ### 内存泄漏
 
+1. 使用LeakCanary检测，使用闪验SDK的位置，内存泄漏 LoginSelectorActivity无法回收
+
+2. 使用LeakCanary检测，TagListActivity位置，内存泄漏 因为线程，在Subscribe方法中，被持有，taglistActvity内存泄漏
+
+### View优化
+
+1. 项目中的Gif没有绑定生命周期，导致在已经脱离屏幕外之后依然处于加载绘制状态， 导致GPU一直在走渲染功能
+
+
+2. 项目中的首页自定义控件没有绑定RecyclerView没有绑定滑动状态监听，导致在移除屏幕后，还会调用GPU渲染
+
+3. 项目中的PageLayout布局管理器类，是实现懒加载的过程中，只实现了数据的懒加载，而不是布局的懒加载（推荐使用ViewStub）倒是Lottie动画在Fragment创建过程中就要一直进行绘制工作，直到所有Fragment走完加载过程，销毁掉lottie动画才能避免绘制
